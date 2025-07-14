@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { extractYouTubeVideoId, isYouTubeShorts } from "@/lib/admin-auth";
 
+export const runtime = 'nodejs';
+
 // 특정 콘텐츠 조회
 export async function GET(
   request: NextRequest,
