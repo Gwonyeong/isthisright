@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+export const runtime = 'nodejs';
+
 export async function GET() {
   try {
     // 모든 댓글과 대댓글을 하나의 리스트로 가져오기
