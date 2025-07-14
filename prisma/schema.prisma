@@ -1,0 +1,124 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 토론 주제 콘텐츠
+model Contents {
+  id               Int           @id @default(autoincrement())
+  title            String
+  description      String?
+  youtube_url      String
+  youtube_video_id String
+  thumbnail_url    String?
+  is_shorts        Boolean       @default(false) // YouTube 쇼츠 여부
+  status           ContentStatus @default(DRAFT) // 게시 상태
+  views            Int           @default(0) // 조회수
+  created_at       DateTime      @default(now())
+  updated_at       DateTime      @updatedAt
+
+  // 관계
+  votes    Votes[]
+  comments Comments[]
+
+  @@map("contents")
+}
+
+// 찬반 투표
+model Votes {
+  id         Int      @id @default(autoincrement())
+  content_id Int
+  vote_type  VoteType
+  ip_address String
+  created_at DateTime @default(now())
+
+  // 관계
+  content Contents @relation(fields: [content_id], references: [id], onDelete: Cascade)
+
+  // IP당 콘텐츠당 하나의 투표만 허용
+  @@unique([content_id, ip_address])
+  @@map("votes")
+}
+
+// 댓글
+model Comments {
+  id          Int           @id @default(autoincrement())
+  content_id  Int
+  author_name String
+  content     String
+  user_vote   VoteType // 댓글 작성자의 찬반 진영
+  ip_address  String // 작성자 IP (관리 목적)
+  status      CommentStatus @default(ACTIVE) // 댓글 상태
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+
+  // 관계
+  content_ref Contents  @relation(fields: [content_id], references: [id], onDelete: Cascade)
+  replies     Replies[]
+  likes       Likes[]
+
+  @@map("comments")
+}
+
+// 대댓글
+model Replies {
+  id          Int           @id @default(autoincrement())
+  comment_id  Int
+  author_name String
+  content     String
+  user_vote   VoteType // 대댓글 작성자의 찬반 진영
+  ip_address  String // 작성자 IP (관리 목적)
+  status      CommentStatus @default(ACTIVE) // 대댓글 상태
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+
+  // 관계
+  comment Comments @relation(fields: [comment_id], references: [id], onDelete: Cascade)
+
+  @@map("replies")
+}
+
+// 댓글 추천
+model Likes {
+  id         Int      @id @default(autoincrement())
+  comment_id Int
+  ip_address String
+  created_at DateTime @default(now())
+
+  // 관계
+  comment Comments @relation(fields: [comment_id], references: [id], onDelete: Cascade)
+
+  // IP당 댓글당 하나의 추천만 허용
+  @@unique([comment_id, ip_address])
+  @@map("likes")
+}
+
+// 투표 타입 Enum
+enum VoteType {
+  AGREE
+  DISAGREE
+}
+
+// 콘텐츠 상태 Enum
+enum ContentStatus {
+  DRAFT // 임시저장
+  PUBLISHED // 게시됨
+}
+
+// 댓글 상태 Enum
+enum CommentStatus {
+  ACTIVE // 정상
+  FLAGGED // 신고됨
+  DELETED // 삭제됨
+}

@@ -1,0 +1,23 @@
+# Dependencies
+node_modules
+.next
+out
+
+# Generated files
+lib/generated
+prisma/generated
+**/*.generated.*
+
+# Build outputs
+dist
+build
+
+# Environment files
+.env
+.env.local
+.env.production.local
+.env.development.local
+
+# OS generated files
+.DS_Store
+Thumbs.db
