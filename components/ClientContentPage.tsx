@@ -64,9 +64,10 @@ export default function ClientContentPage({
   const handleVoteChange = async (
     agreeCount: number,
     disagreeCount: number,
-    newUserVote: VoteType
+    newUserVote: UserVoteType
   ) => {
     try {
+      if (newUserVote === null) return; // null 투표는 처리하지 않음
       const response = await submitVote(content.id, newUserVote);
       setUserVote(response.userVote);
 

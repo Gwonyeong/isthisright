@@ -5,14 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Heart, MessageCircle, Calendar } from "lucide-react";
-import { VoteType, getVoteIcon } from "@/lib/vote-utils";
+import { VoteType } from "@/lib/types";
+import { getVoteIcon } from "@/lib/vote-utils";
 
 interface Reply {
   id: number;
   authorName: string;
   content: string;
   createdAt: string;
-  userVote?: VoteType; // 대댓글 작성자의 투표 상태
+  userVote?: VoteType | null; // 대댓글 작성자의 투표 상태
 }
 
 interface Comment {
@@ -22,7 +23,7 @@ interface Comment {
   createdAt: string;
   likesCount: number;
   replies: Reply[];
-  userVote?: VoteType; // 댓글 작성자의 투표 상태
+  userVote?: VoteType | null; // 댓글 작성자의 투표 상태
 }
 
 interface CommentItemProps {
@@ -80,7 +81,7 @@ export default function CommentItem({
     }
   };
 
-  const commentVoteInfo = getVoteIcon(comment.userVote);
+  const commentVoteInfo = getVoteIcon(comment.userVote || null);
 
   return (
     <Card className="bg-gray-800 border-gray-700">
@@ -241,7 +242,7 @@ export default function CommentItem({
         {comment.replies.length > 0 && (
           <div className="mt-4 space-y-3">
             {comment.replies.map((reply) => {
-              const replyVoteInfo = getVoteIcon(reply.userVote);
+              const replyVoteInfo = getVoteIcon(reply.userVote || null);
               return (
                 <div key={reply.id} className="ml-8 p-3 bg-gray-700 rounded-lg">
                   <div className="flex items-center space-x-2 mb-2">

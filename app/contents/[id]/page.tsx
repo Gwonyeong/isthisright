@@ -5,6 +5,8 @@ import Footer from "@/components/Footer";
 import ClientContentPage from "@/components/ClientContentPage";
 import { ContentDetail } from "@/lib/types";
 
+export const dynamic = 'force-dynamic';
+
 type Props = {
   params: { id: string };
 };

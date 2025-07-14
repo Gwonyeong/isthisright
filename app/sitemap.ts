@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { ContentSummary } from "@/lib/types";
+export const dynamic = "force-dynamic";
 
 async function getContents(): Promise<ContentSummary[]> {
   try {

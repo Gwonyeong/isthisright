@@ -314,12 +314,13 @@ export default function AdminEditContentPage() {
           <AlertCircle className="h-16 w-16 text-red-400 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-white mb-4">오류 발생</h2>
           <p className="text-gray-300 mb-6">{error}</p>
-          <Link href="/admin/contents">
-            <Button className="bg-blue-600 hover:bg-blue-700">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              콘텐츠 목록으로 돌아가기
-            </Button>
-          </Link>
+          <Button 
+            onClick={() => router.push("/admin/contents")}
+            className="bg-blue-600 hover:bg-blue-700"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            콘텐츠 목록으로 돌아가기
+          </Button>
         </div>
       </div>
     );
@@ -616,14 +617,13 @@ export default function AdminEditContentPage() {
 
           {/* 저장 버튼 */}
           <div className="flex justify-end gap-4">
-            <Link href="/admin/contents">
-              <Button
-                variant="outline"
-                className="border-gray-600 text-gray-300 hover:text-white"
-              >
-                취소
-              </Button>
-            </Link>
+            <Button
+              variant="outline"
+              onClick={() => router.push("/admin/contents")}
+              className="border-gray-600 text-gray-300 hover:text-white"
+            >
+              취소
+            </Button>
             <Button
               type="submit"
               disabled={isSubmitting}

@@ -6,6 +6,8 @@ import ContentCard from "@/components/ContentCard";
 import CoupangAd from "@/components/CoupangAd";
 import { ContentSummary } from "@/lib/types";
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "영상 속 상황 토론 플랫폼",
   description:

@@ -10,7 +10,7 @@ interface CoupangAdProps {
 export default function CoupangAd({ variant = "card", className = "" }: CoupangAdProps) {
   useEffect(() => {
     // 쿠팡 파트너스 스크립트를 동적으로 로드
-    if (typeof window !== "undefined" && !(window as any).coupang) {
+    if (typeof window !== "undefined" && !(window as Window & { coupang?: unknown }).coupang) {
       const script = document.createElement("script");
       script.src = "https://ads-partners.coupang.com/g.js";
       script.async = true;

@@ -531,14 +531,13 @@ export default function AdminNewContentPage() {
 
           {/* 저장 버튼 */}
           <div className="flex justify-end gap-4">
-            <Link href="/admin/contents">
-              <Button
-                variant="outline"
-                className="border-gray-600 text-gray-300 hover:text-white"
-              >
-                취소
-              </Button>
-            </Link>
+            <Button
+              variant="outline"
+              onClick={() => router.push("/admin/contents")}
+              className="border-gray-600 text-gray-300 hover:text-white"
+            >
+              취소
+            </Button>
             <Button
               type="submit"
               disabled={isSubmitting}

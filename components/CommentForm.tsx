@@ -4,7 +4,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { MessageCircle, Vote } from "lucide-react";
-import { VoteType, getVoteIcon } from "@/lib/vote-utils";
+import { VoteType } from "@/lib/types";
+import { getVoteIcon } from "@/lib/vote-utils";
 
 interface CommentFormProps {
   contentId: number;

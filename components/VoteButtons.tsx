@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ThumbsUp, ThumbsDown } from "lucide-react";
+import { UserVoteType } from "@/lib/types";
 import {
-  VoteType,
   getVoteFromCookie,
   saveVoteToCookie,
 } from "@/lib/vote-utils";
@@ -16,7 +16,7 @@ interface VoteButtonsProps {
   onVoteChange?: (
     agreeCount: number,
     disagreeCount: number,
-    userVote: VoteType
+    userVote: UserVoteType
   ) => void;
 }
 
@@ -26,7 +26,7 @@ export default function VoteButtons({
   initialDisagreeCount,
   onVoteChange,
 }: VoteButtonsProps) {
-  const [currentVote, setCurrentVote] = useState<VoteType>(null);
+  const [currentVote, setCurrentVote] = useState<UserVoteType>(null);
   const [agreeCount, setAgreeCount] = useState(initialAgreeCount);
   const [disagreeCount, setDisagreeCount] = useState(initialDisagreeCount);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,7 +37,7 @@ export default function VoteButtons({
     setCurrentVote(savedVote);
   }, [contentId]);
 
-  const handleVote = async (voteType: VoteType) => {
+  const handleVote = async (voteType: UserVoteType) => {
     if (isLoading) return;
 
     setIsLoading(true);
