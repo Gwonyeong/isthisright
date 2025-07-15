@@ -11,8 +11,10 @@ import {
   AdminCommentInfo,
 } from "./types";
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+const API_BASE_URL = 
+  typeof window !== "undefined" 
+    ? window.location.origin
+    : (process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000");
 
 // 공통 fetch 함수
 async function apiFetch<T>(

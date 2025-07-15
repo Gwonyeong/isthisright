@@ -1,23 +1,67 @@
 import { MetadataRoute } from "next";
 import { ContentSummary } from "@/lib/types";
+import { prisma } from "@/lib/prisma";
 export const dynamic = "force-dynamic";
 
 async function getContents(): Promise<ContentSummary[]> {
   try {
-    const response = await fetch(
-      `${
-        process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
-      }/api/contents`,
-      {
-        cache: "no-store",
-      }
-    );
+    const contents = await prisma.contents.findMany({
+      where: {
+        status: "PUBLISHED",
+      },
+      include: {
+        votes: true,
+        comments: {
+          include: {
+            replies: true,
+          },
+        },
+      },
+      orderBy: {
+        created_at: "desc",
+      },
+    });
 
-    if (!response.ok) {
-      return [];
-    }
+    // 각 콘텐츠의 통계 계산
+    const contentsWithStats = contents.map((content) => {
+      const agreeVotes = content.votes.filter(
+        (vote) => vote.vote_type === "AGREE"
+      ).length;
+      const disagreeVotes = content.votes.filter(
+        (vote) => vote.vote_type === "DISAGREE"
+      ).length;
+      const totalVotes = agreeVotes + disagreeVotes;
+      const agreePercentage =
+        totalVotes > 0 ? Math.round((agreeVotes / totalVotes) * 100) : 0;
 
-    return await response.json();
+      const totalComments =
+        content.comments.length +
+        content.comments.reduce(
+          (sum, comment) => sum + comment.replies.length,
+          0
+        );
+
+      return {
+        id: content.id,
+        title: content.title,
+        description: content.description,
+        youtube_video_id: content.youtube_video_id,
+        thumbnail_url: content.thumbnail_url,
+        is_shorts: content.is_shorts,
+        views: content.views,
+        votes: {
+          agree: agreeVotes,
+          disagree: disagreeVotes,
+          total: totalVotes,
+          agreePercentage,
+        },
+        comments: totalComments,
+        created_at: content.created_at.toISOString(),
+        updated_at: content.updated_at.toISOString(),
+      };
+    });
+
+    return contentsWithStats;
   } catch (error) {
     console.error("Error fetching contents for sitemap:", error);
     return [];
