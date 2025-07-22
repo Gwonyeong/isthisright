@@ -34,3 +34,21 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Coupang Partners Ads
+
+This project includes Coupang Partners advertisements. Note that:
+
+- **Ads only work on registered domains** - Coupang Partners requires domain verification
+- **Local development shows mockups** - On localhost, you'll see placeholder ads instead of real ones
+- **To enable ads in production**: Set `NEXT_PUBLIC_ENABLE_COUPANG_ADS=true` in your environment variables
+- **Ad blocker detection** - The app gracefully handles ad blockers with fallback UI
+
+### Testing Ads Locally
+
+Since Coupang Partners ads don't work on localhost, the app shows development mockups. To test the actual ad integration:
+
+1. Deploy to a staging environment with a real domain
+2. Register your domain with Coupang Partners
+3. Set the environment variable `NEXT_PUBLIC_ENABLE_COUPANG_ADS=true`
+4. Update the tracking code in `components/CoupangAd.tsx` if needed

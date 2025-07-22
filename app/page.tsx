@@ -301,7 +301,7 @@ export default async function Home() {
         {/* 하단 배너 광고 */}
         <section className="py-8 bg-gray-900">
           <div className="container max-w-screen-xl px-4">
-            <CoupangAd variant="banner" className="w-full" />
+            <CoupangAd variant="banner" className="w-full" showDisclaimer />
           </div>
         </section>
 
